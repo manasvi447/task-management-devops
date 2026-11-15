@@ -1,10 +1,6 @@
 venv/
+.ansible-venv/
 __pycache__/
 .pytest_cache/
 *.pyc
 .env
-.ansible-venv/
-.ansible-venv
-__pycache__/
-.pytest_cache/
-venv/
