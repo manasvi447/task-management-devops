@@ -1,0 +1,37 @@
+---
+- name: Configure and test Task Management API
+  hosts: local
+  connection: local
+  become: false
+
+  tasks:
+    - name: Check Python installation
+      command: python3 --version
+      register: python_version
+      changed_when: false
+
+    - name: Display Python version
+      debug:
+        msg: "{{ python_version.stdout }}"
+
+    - name: Create Python virtual environment
+      command: python3 -m venv .ansible-venv
+      args:
+        chdir: "{{ playbook_dir }}/.."
+        creates: "{{ playbook_dir }}/../.ansible-venv/bin/python"
+
+    - name: Install project dependencies
+      command: "{{ playbook_dir }}/../.ansible-venv/bin/python -m pip install -r requirements.txt"
+      args:
+        chdir: "{{ playbook_dir }}/.."
+
+    - name: Run application tests
+      command: "{{ playbook_dir }}/../.ansible-venv/bin/python -m pytest -v"
+      args:
+        chdir: "{{ playbook_dir }}/.."
+      register: test_result
+      changed_when: false
+
+    - name: Display test results
+      debug:
+        var: test_result.stdout_lines
