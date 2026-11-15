@@ -1,0 +1,21 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-management-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: task-management-api
+  template:
+    metadata:
+      labels:
+        app: task-management-api
+    spec:
+      containers:
+        - name: task-management-api
+          image: task-management-api:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
